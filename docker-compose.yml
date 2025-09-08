@@ -1,0 +1,18 @@
+services:
+  python-app:
+    build:
+      context: ./python
+      dockerfile: Dockerfile.python
+    container_name: figuras_python
+    
+  java-app:
+    build:
+      context: ./java
+      dockerfile: Dockerfile.java
+    container_name: figuras_java
+    
+  cpp-app:
+    build:
+      context: ./cpp
+      dockerfile: Dockerfile.cpp
+    container_name: figuras_cpp 
