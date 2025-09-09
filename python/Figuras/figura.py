@@ -2,14 +2,32 @@
 """
 Módulo que define la clase base Figura.
 """
+from generador_id import GeneradorID
 
 class Figura:
     """Clase madre para figuras geométricas 2D y 3D."""
 
-    def __init__(self, nombre, tipo):
-        """Constructor de la clase Figura."""
+    def __init__(self, nombre, tipo, id_figura=None):
+        """
+        Constructor de la clase Figura.
+        
+        Args:
+            nombre (str): Nombre de la figura
+            tipo (str): Tipo de figura (2D/3D)
+            id_figura (int, optional): ID específico, si no se proporciona se genera automáticamente
+        """
         self.nombre = nombre
         self.tipo = tipo
+        
+        # Usar el generador de IDs para obtener un ID único
+        generador = GeneradorID()
+        
+        if id_figura is None:
+            self.id_figura = generador.obtener_siguiente_id()
+        else:
+            self.id_figura = id_figura
+            # Actualizar el generador si el ID proporcionado es mayor
+            generador.actualizar_si_mayor(id_figura)
 
     def get_nombre(self):
         """Retorna el nombre de la figura."""
@@ -18,6 +36,10 @@ class Figura:
     def get_tipo(self):
         """Retorna el tipo de la figura."""
         return self.tipo
+    
+    def get_id(self):
+        """Retorna el ID único de la figura."""
+        return self.id_figura
 
     def set_nombre(self, nombre):
         """Establece el nombre de la figura."""
