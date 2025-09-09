@@ -1,25 +1,25 @@
-
+﻿
 
 """
-Módulo que define la clase abstracta Figura3d.
+MÃ³dulo que define la clase abstracta Figura3d.
 """
 from abc import ABC, abstractmethod
 from figura import Figura
 
 class Figura3d(Figura, ABC):
-    """Clase abstracta para figuras geométricas 3D. Hereda de Figura."""
+    """Clase abstracta para figuras geomÃ©tricas 3D. Hereda de Figura."""
 
     def __init__(self, nombre, id_figura=None):
         """
         Constructor de la clase Figura3d.
-        
+
         Args:
             nombre (str): Nombre de la figura
-            id_figura (int, optional): ID específico para la figura
+            id_figura (int, optional): ID especÃ­fico para la figura
         """
         super().__init__(nombre, "3D", id_figura)
 
     @abstractmethod
     def calcular_volumen(self):
-        """Método abstracto para calcular el volumen de la figura 3D."""
+        """MÃ©todo abstracto para calcular el volumen de la figura 3D."""
         raise NotImplementedError("Subclases deben implementar calcular_volumen()")

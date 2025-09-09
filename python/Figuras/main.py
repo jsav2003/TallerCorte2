@@ -1,18 +1,18 @@
-
+﻿
 
 """
-Módulo principal para ejecutar el gestor de figuras geométricas.
-Clase Main siguiendo el patrón similar a Java.
+MÃ³dulo principal para ejecutar el gestor de figuras geomÃ©tricas.
+Clase Main siguiendo el patrÃ³n similar a Java.
 """
 from gestionar import Gestionar
 
 class Main:
-    """Clase principal de la aplicación."""
-    
+    """Clase principal de la aplicaciÃ³n."""
+
     @staticmethod
     def main():
         """
-        Método principal de la aplicación.
+        MÃ©todo principal de la aplicaciÃ³n.
         Equivalente al main(String[] args) de Java.
         """
         gestor = Gestionar()

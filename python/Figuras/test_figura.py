@@ -1,4 +1,4 @@
-"""
+﻿"""
 Test module for geometric figures classes.
 
 This module contains unit tests for Circulo, Cuadrado, Cubo, and Esfera classes.
@@ -15,13 +15,13 @@ class TestCirculo:
     """Tests para la clase Circulo."""
 
     def test_crear_circulo(self):
-        """Test para verificar la creación de un círculo."""
+        """Test para verificar la creaciÃ³n de un cÃ­rculo."""
         circulo = Circulo(5)
         assert circulo.radio == 5
         assert circulo.get_nombre() == "Circulo"
 
     def test_calcular_area_circulo(self):
-        """Test para verificar el cálculo del área del círculo."""
+        """Test para verificar el cÃ¡lculo del Ã¡rea del cÃ­rculo."""
         circulo = Circulo(1)
         expected_area = 3.14159 * 1 ** 2
         assert circulo.calcular_area() == expected_area
@@ -35,7 +35,7 @@ class TestCirculo:
         assert pytest.approx(circulo3.calcular_area(), rel=1e-5) == expected_area3
 
     def test_calcular_perimetro_circulo(self):
-        """Test para verificar el cálculo del perímetro del círculo."""
+        """Test para verificar el cÃ¡lculo del perÃ­metro del cÃ­rculo."""
         circulo = Circulo(1)
         expected_perimetro = 2 * 3.14159 * 1
         assert circulo.calcular_perimetro() == expected_perimetro
@@ -55,13 +55,13 @@ class TestCuadrado:
     """Tests para la clase Cuadrado."""
 
     def test_crear_cuadrado(self):
-        """Test para verificar la creación de un cuadrado."""
+        """Test para verificar la creaciÃ³n de un cuadrado."""
         cuadrado = Cuadrado(4)
         assert cuadrado.lado == 4
         assert cuadrado.get_nombre() == "Cuadrado"
 
     def test_calcular_area_cuadrado(self):
-        """Test para verificar el cálculo del área del cuadrado."""
+        """Test para verificar el cÃ¡lculo del Ã¡rea del cuadrado."""
         cuadrado = Cuadrado(4)
         assert cuadrado.calcular_area() == 16
 
@@ -72,7 +72,7 @@ class TestCuadrado:
         assert cuadrado3.calcular_area() == 6.25
 
     def test_calcular_perimetro_cuadrado(self):
-        """Test para verificar el cálculo del perímetro del cuadrado."""
+        """Test para verificar el cÃ¡lculo del perÃ­metro del cuadrado."""
         cuadrado = Cuadrado(4)
         assert cuadrado.calcular_perimetro() == 16
 
@@ -87,13 +87,13 @@ class TestCubo:
     """Tests para la clase Cubo."""
 
     def test_crear_cubo(self):
-        """Test para verificar la creación de un cubo."""
+        """Test para verificar la creaciÃ³n de un cubo."""
         cubo = Cubo(3)
         assert cubo.lado == 3
         assert cubo.get_nombre() == "Cubo"
 
     def test_calcular_volumen_cubo(self):
-        """Test para verificar el cálculo del volumen del cubo."""
+        """Test para verificar el cÃ¡lculo del volumen del cubo."""
         cubo = Cubo(3)
         assert cubo.calcular_volumen() == 27
 
@@ -111,13 +111,13 @@ class TestEsfera:
     """Tests para la clase Esfera."""
 
     def test_crear_esfera(self):
-        """Test para verificar la creación de una esfera."""
+        """Test para verificar la creaciÃ³n de una esfera."""
         esfera = Esfera(5)
         assert esfera.radio == 5
         assert esfera.get_nombre() == "Esfera"
 
     def test_calcular_volumen_esfera(self):
-        """Test para verificar el cálculo del volumen de la esfera."""
+        """Test para verificar el cÃ¡lculo del volumen de la esfera."""
         esfera = Esfera(1)
         expected_volume = (4/3) * 3.14159 * 1 ** 3
         assert pytest.approx(esfera.calcular_volumen(), rel=1e-5) == expected_volume
@@ -130,9 +130,9 @@ class TestEsfera:
         assert esfera3.calcular_volumen() == 0
 
     def test_volumen_esfera_precision(self):
-        """Test para verificar la precisión del cálculo del volumen."""
+        """Test para verificar la precisiÃ³n del cÃ¡lculo del volumen."""
         esfera = Esfera(2)
-        # Volumen = (4/3) * π * r³ = (4/3) * 3.14159 * 8
+        # Volumen = (4/3) * Ï€ * rÂ³ = (4/3) * 3.14159 * 8
         expected_volume = (4/3) * 3.14159 * 8
         calculated_volume = esfera.calcular_volumen()
         assert pytest.approx(calculated_volume, rel=1e-3) == expected_volume
@@ -143,16 +143,16 @@ class TestCasosEspeciales:
 
     def test_valores_negativos(self):
         """Test para verificar comportamiento con valores negativos."""
-        # Aunque matemáticamente no tiene sentido, verificamos que las clases
+        # Aunque matemÃ¡ticamente no tiene sentido, verificamos que las clases
         # manejen valores negativos
         circulo = Circulo(-1)
-        assert circulo.calcular_area() == 3.14159  # (-1)² = 1
+        assert circulo.calcular_area() == 3.14159  # (-1)Â² = 1
 
         cuadrado = Cuadrado(-2)
-        assert cuadrado.calcular_area() == 4  # (-2)² = 4
+        assert cuadrado.calcular_area() == 4  # (-2)Â² = 4
 
         cubo = Cubo(-3)
-        assert cubo.calcular_volumen() == -27  # (-3)³ = -27
+        assert cubo.calcular_volumen() == -27  # (-3)Â³ = -27
 
     def test_valores_decimales(self):
         """Test para verificar comportamiento con valores decimales."""
@@ -171,15 +171,15 @@ class TestComparaciones:
     """Tests para comparar resultados entre diferentes figuras."""
 
     def test_comparar_areas_2d(self):
-        """Test para comparar áreas entre figuras 2D."""
+        """Test para comparar Ã¡reas entre figuras 2D."""
         circulo = Circulo(1)
         cuadrado = Cuadrado(1)
 
-        # El área del círculo con radio 1 debe ser mayor que el área del cuadrado con lado 1
+        # El Ã¡rea del cÃ­rculo con radio 1 debe ser mayor que el Ã¡rea del cuadrado con lado 1
         assert circulo.calcular_area() > cuadrado.calcular_area()
 
     def test_comparar_volumenes_3d(self):
-        """Test para comparar volúmenes entre figuras 3D."""
+        """Test para comparar volÃºmenes entre figuras 3D."""
         cubo = Cubo(2)
         esfera = Esfera(2)
 

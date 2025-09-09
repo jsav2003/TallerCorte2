@@ -3,6 +3,9 @@ FROM python:3.11-slim
 # Establecer el directorio de trabajo
 WORKDIR /app
 
+# Instalar pytest y pylint para pruebas y análisis estático
+RUN pip install pytest pylint
+
 # Copiar el código de la aplicación
 COPY Figuras/ ./Figuras/
 
