@@ -4,6 +4,9 @@ services:
       context: ./python
       dockerfile: Dockerfile.python
     container_name: figuras_python
+    volumes:
+      - ./python/Figuras:/app/Figuras
+    working_dir: /app
     
   java-app:
     build:

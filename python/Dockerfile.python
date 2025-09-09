@@ -1,4 +1,16 @@
 FROM python:3.11-slim
+
+# Establecer el directorio de trabajo
 WORKDIR /app
+
+# Copiar el código de la aplicación
 COPY Figuras/ ./Figuras/
+
+# Crear un directorio para datos persistentes si no existe
+RUN mkdir -p /app/Figuras
+
+# Establecer permisos para escribir archivos
+RUN chmod 777 /app/Figuras
+
+# Comando por defecto
 CMD ["python", "Figuras/main.py"]
