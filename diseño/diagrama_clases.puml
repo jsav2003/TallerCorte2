@@ -1,0 +1,175 @@
+@startuml DiagramaClases
+title Diagrama de Clases - Sistema de Figuras Geométricas Python
+
+abstract class Figura {
+  - nombre: str
+  - tipo: str
+  - id_figura: int
+  + __init__(nombre, tipo, id_figura)
+  + get_nombre(): str
+  + get_tipo(): str
+  + get_id(): int
+  + set_nombre(nombre): void
+  + set_tipo(tipo): void
+}
+
+abstract class Figura2d {
+  + __init__(nombre, id_figura)
+  + calcular_area(): float
+  + calcular_perimetro(): float
+}
+
+abstract class Figura3d {
+  + __init__(nombre, id_figura)
+  + calcular_volumen(): float
+}
+
+class Circulo {
+  - radio: float
+  + __init__(radio, id_figura)
+  + calcular_area(): float
+  + calcular_perimetro(): float
+  + get_radio(): float
+  + set_radio(radio): void
+  + __str__(): str
+  + __repr__(): str
+}
+
+class Cuadrado {
+  - lado: float
+  + __init__(lado, id_figura)
+  + calcular_area(): float
+  + calcular_perimetro(): float
+  + get_lado(): float
+  + set_lado(lado): void
+  + __str__(): str
+  + __repr__(): str
+}
+
+class Cubo {
+  - lado: float
+  + __init__(lado, id_figura)
+  + calcular_volumen(): float
+  + calcular_area_superficie(): float
+  + get_lado(): float
+  + set_lado(lado): void
+  + __str__(): str
+  + __repr__(): str
+}
+
+class Esfera {
+  - radio: float
+  + __init__(radio, id_figura)
+  + calcular_volumen(): float
+  + calcular_area_superficie(): float
+  + get_radio(): float
+  + set_radio(radio): void
+  + __str__(): str
+  + __repr__(): str
+}
+
+class FiguraFactory {
+  + crear_figura(tipo, dimensiones): Figura
+  + tipos_disponibles(): list
+}
+
+class RepositorioFiguras {
+  - figuras: Dict
+  - archivo_persistencia: str
+  - persistencia: PersistenciaArchivos
+  - auto_guardar: bool
+  + __init__(archivo_persistencia, auto_guardar)
+  + almacenar_figura(figura): int
+  + obtener_figura(figura_id): Figura
+  + obtener_todas_figuras(): List
+  + eliminar_figura(figura_id): bool
+  + contar_figuras(): int
+  + buscar_por_tipo(tipo): List
+  + limpiar_repositorio(): void
+  + guardar_figuras(): bool
+  + cargar_figuras(): bool
+}
+
+class Gestionar {
+  - repositorio: RepositorioFiguras
+  - adapter: UnidadAdapter
+  - unidad_actual: UnidadMedida
+  - lector: LectorEntrada
+  - formateador: FormateadorSalida
+  + __init__()
+  + ejecutar(): void
+  + mostrar_menu_principal(): void
+  + procesar_opcion(opcion): void
+  + crear_figura(): void
+  + consultar_todas_figuras(): void
+  + consultar_figura_por_id(): void
+  + eliminar_figura(): void
+}
+
+class GeneradorID {
+  - contador_id: int
+  + obtener_siguiente_id(): int
+  + actualizar_si_mayor(id): void
+  + resetear(): void
+}
+
+class UnidadMedida {
+  + get_factor_conversion(): float
+  + get_simbolo(): str
+  + get_nombres_completos(): Dict
+}
+
+class UnidadAdapter {
+  + convertir(valor, desde, hacia): float
+  + formatear_con_unidad(valor, unidad): str
+}
+
+class PersistenciaArchivos {
+  + guardar_en_archivo(figuras, archivo): bool
+  + cargar_desde_archivo(archivo): List
+}
+
+class LectorEntrada {
+  + leer_entero(mensaje, minimo, maximo): int
+  + leer_flotante(mensaje, minimo): float
+  + leer_cadena(mensaje): str
+  + confirmar_accion(mensaje): bool
+}
+
+class FormateadorSalida {
+  + formatear_menu(titulo, opciones, info): str
+  + formatear_figura(figura, unidad): str
+  + formatear_lista_figuras(figuras, unidad): str
+  + formatear_estadisticas(estadisticas): str
+}
+
+class Main {
+  + main(): void
+}
+
+' Relaciones de herencia
+Figura <|-- Figura2d
+Figura <|-- Figura3d
+Figura2d <|-- Circulo
+Figura2d <|-- Cuadrado
+Figura3d <|-- Cubo
+Figura3d <|-- Esfera
+
+' Relaciones de composición
+Gestionar *-- RepositorioFiguras
+Gestionar *-- UnidadAdapter
+Gestionar *-- LectorEntrada
+Gestionar *-- FormateadorSalida
+RepositorioFiguras *-- PersistenciaArchivos
+
+' Relaciones de dependencia
+Figura ..> GeneradorID
+FiguraFactory ..> Circulo
+FiguraFactory ..> Cuadrado
+FiguraFactory ..> Cubo
+FiguraFactory ..> Esfera
+Gestionar ..> FiguraFactory
+UnidadAdapter ..> UnidadMedida
+Main ..> Gestionar
+
+@enduml

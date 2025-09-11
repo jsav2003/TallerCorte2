@@ -1,0 +1,55 @@
+@startuml SecuenciaConsultarUnidades
+title Diagrama de Secuencia - Consultar Figuras con Conversión de Unidades
+
+actor Usuario as U
+participant "Gestionar" as G
+participant "LectorEntrada" as LE
+participant "RepositorioFiguras" as RF
+participant "UnidadAdapter" as UA
+participant "Circulo" as C
+
+U -> G : seleccionar_opcion(5) - Cambiar unidad
+activate G
+
+G -> LE : leer_entero("Seleccione unidad", 1, 5)
+activate LE
+LE --> G : unidad_seleccionada = 2 (CENTIMETROS)
+deactivate LE
+
+G -> G : unidad_actual = CENTIMETROS
+
+U -> G : seleccionar_opcion(2) - Consultar todas las figuras
+G -> G : consultar_todas_figuras()
+
+G -> RF : obtener_todas_figuras()
+activate RF
+RF --> G : lista_figuras
+deactivate RF
+
+loop para cada figura
+    G -> C : calcular_area()
+    activate C
+    C --> G : area_metros = 78.54
+    deactivate C
+    
+    G -> UA : convertir(78.54, METROS, CENTIMETROS)
+    activate UA
+    UA --> G : area_convertida = 785400.0
+    deactivate UA
+    
+    G -> C : calcular_perimetro()
+    activate C
+    C --> G : perimetro_metros = 31.42
+    deactivate C
+    
+    G -> UA : convertir(31.42, METROS, CENTIMETROS)
+    activate UA
+    UA --> G : perimetro_convertido = 3142.0
+    deactivate UA
+end
+
+G --> U : mostrar lista con medidas en centímetros
+
+deactivate G
+
+@enduml
