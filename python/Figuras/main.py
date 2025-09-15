@@ -1,22 +1,22 @@
-﻿
+"""
+Clase principal del programa - Punto de entrada
+"""
+from .Gestionar import Gestionar
 
-"""
-MÃ³dulo principal para ejecutar el gestor de figuras geomÃ©tricas.
-Clase Main siguiendo el patrÃ³n similar a Java.
-"""
-from gestionar import Gestionar
 
 class Main:
-    """Clase principal de la aplicaciÃ³n."""
-
+    """Clase principal del programa"""
+    
     @staticmethod
-    def main():
-        """
-        MÃ©todo principal de la aplicaciÃ³n.
-        Equivalente al main(String[] args) de Java.
-        """
+    def main() -> None:
+        """Método principal para iniciar la aplicación"""
         gestor = Gestionar()
         gestor.ejecutar()
+        
 
+
+# Punto de entrada cuando se ejecuta el módulo directamente
 if __name__ == "__main__":
     Main.main()
+    1
+    

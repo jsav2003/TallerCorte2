@@ -1,50 +1,41 @@
-﻿
 """
-MÃ³dulo que define la clase base Figura.
+Clase base abstracta Figura
 """
-from generador_id import GeneradorID
+from abc import ABC, abstractmethod
 
-class Figura:
-    """Clase madre para figuras geomÃ©tricas 2D y 3D."""
 
-    def __init__(self, nombre, tipo, id_figura=None):
+class Figura(ABC):
+    """Clase abstracta base para todas las figuras geométricas"""
+    
+    def __init__(self, nombre: str, tipo: str, id_figura: int):
         """
-        Constructor de la clase Figura.
-
+        Constructor de la clase Figura
+        
         Args:
             nombre (str): Nombre de la figura
-            tipo (str): Tipo de figura (2D/3D)
-            id_figura (int, optional): ID especÃ­fico, si no se proporciona se genera automÃ¡ticamente
+            tipo (str): Tipo de figura
+            id_figura (int): Identificador único de la figura
         """
-        self.nombre = nombre
-        self.tipo = tipo
-
-        # Usar el generador de IDs para obtener un ID Ãºnico
-        generador = GeneradorID()
-
-        if id_figura is None:
-            self.id_figura = generador.obtener_siguiente_id()
-        else:
-            self.id_figura = id_figura
-            # Actualizar el generador si el ID proporcionado es mayor
-            generador.actualizar_si_mayor(id_figura)
-
-    def get_nombre(self):
-        """Retorna el nombre de la figura."""
-        return self.nombre
-
-    def get_tipo(self):
-        """Retorna el tipo de la figura."""
-        return self.tipo
-
-    def get_id(self):
-        """Retorna el ID Ãºnico de la figura."""
-        return self.id_figura
-
-    def set_nombre(self, nombre):
-        """Establece el nombre de la figura."""
-        self.nombre = nombre
-
-    def set_tipo(self, tipo):
-        """Establece el tipo de la figura."""
-        self.tipo = tipo
+        self._nombre = nombre
+        self._tipo = tipo
+        self._id_figura = id_figura
+    
+    def get_nombre(self) -> str:
+        """Obtiene el nombre de la figura"""
+        return self._nombre
+    
+    def get_tipo(self) -> str:
+        """Obtiene el tipo de la figura"""
+        return self._tipo
+    
+    def get_id(self) -> int:
+        """Obtiene el ID de la figura"""
+        return self._id_figura
+    
+    def set_nombre(self, nombre: str) -> None:
+        """Establece el nombre de la figura"""
+        self._nombre = nombre
+    
+    def set_tipo(self, tipo: str) -> None:
+        """Establece el tipo de la figura"""
+        self._tipo = tipo

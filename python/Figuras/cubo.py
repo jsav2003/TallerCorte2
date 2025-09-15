@@ -1,52 +1,45 @@
-﻿
+"""
+Clase Cubo - Figura tridimensional
+"""
+from .Figura3d import Figura3d
 
-"""
-MÃ³dulo que define la clase Cubo.
-"""
-from figura3d import Figura3d
 
 class Cubo(Figura3d):
-    """Clase para representar un cubo. Hereda de Figura3d."""
-
-    def __init__(self, lado, id_figura=None):
+    """Clase que representa un cubo"""
+    
+    def __init__(self, lado: float, id_figura: int):
         """
-        Constructor de la clase Cubo.
-
+        Constructor de la clase Cubo
+        
         Args:
-            lado (float): Longitud del lado del cubo (debe ser validado externamente)
-            id_figura (int, optional): ID especÃ­fico para la figura
+            lado (float): Longitud del lado del cubo
+            id_figura (int): Identificador único de la figura
         """
         super().__init__("Cubo", id_figura)
-        self.lado = float(lado)
-
-    def calcular_volumen(self):
-        """Calcula el volumen del cubo."""
-        return self.lado ** 3
-
-    def calcular_area_superficie(self):
-        """Calcula el Ã¡rea de superficie del cubo."""
-        return 6 * self.lado ** 2
-
-    def get_lado(self):
-        """Retorna el lado del cubo."""
-        return self.lado
-
-    def set_lado(self, lado):
-        """
-        Establece un nuevo lado para el cubo.
-
-        Args:
-            lado (float): Nuevo lado (debe ser validado externamente)
-        """
-        self.lado = float(lado)
-
-    def __str__(self):
-        """RepresentaciÃ³n en string del cubo."""
-        return (f"Cubo ID:{self.get_id()} - "
-                f"Lado: {self.lado:.2f}, "
-                f"Volumen: {self.calcular_volumen():.2f}, "
-                f"Ãrea superficie: {self.calcular_area_superficie():.2f}")
-
-    def __repr__(self):
-        """RepresentaciÃ³n tÃ©cnica del cubo."""
-        return f"Cubo(lado={self.lado}, id_figura={self.get_id()})"
+        self._lado = lado
+    
+    def calcular_volumen(self) -> float:
+        """Calcula el volumen del cubo"""
+        return self._lado ** 3
+    
+    def calcular_area_superficie(self) -> float:
+        """Calcula el área de superficie del cubo"""
+        return 6 * (self._lado ** 2)
+    
+    def get_lado(self) -> float:
+        """Obtiene la longitud del lado del cubo"""
+        return self._lado
+    
+    def set_lado(self, lado: float) -> None:
+        """Establece la longitud del lado del cubo"""
+        if lado <= 0:
+            raise ValueError("El lado debe ser mayor que cero")
+        self._lado = lado
+    
+    def __str__(self) -> str:
+        """Representación en cadena del cubo"""
+        return f"Cubo(id={self.get_id()}, lado={self._lado:.2f})"
+    
+    def __repr__(self) -> str:
+        """Representación técnica del cubo"""
+        return f"Cubo(lado={self._lado}, id_figura={self.get_id()})"

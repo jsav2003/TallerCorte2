@@ -1,5 +1,14 @@
-{
-  "figuras": [],
-  "contador_id": 0,
-  "version": "1.0"
-}
+[
+  {
+    "id": 2,
+    "nombre": "Cuadrado",
+    "tipo": "2D",
+    "lado": 4.0
+  },
+  {
+    "id": 3,
+    "nombre": "Cuadrado",
+    "tipo": "2D",
+    "lado": 2.0
+  }
+]

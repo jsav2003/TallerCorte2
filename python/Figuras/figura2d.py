@@ -1,30 +1,29 @@
-﻿
-
 """
-MÃ³dulo que define la clase abstracta Figura2d.
+Clase abstracta para figuras bidimensionales
 """
-from abc import ABC, abstractmethod
-from figura import Figura
+from abc import abstractmethod
+from .Figura import Figura
 
-class Figura2d(Figura, ABC):
-    """Clase abstracta para figuras geomÃ©tricas 2D. Hereda de Figura."""
 
-    def __init__(self, nombre, id_figura=None):
+class Figura2d(Figura):
+    """Clase abstracta para figuras bidimensionales"""
+    
+    def __init__(self, nombre: str, id_figura: int):
         """
-        Constructor de la clase Figura2d.
-
+        Constructor de la clase Figura2d
+        
         Args:
             nombre (str): Nombre de la figura
-            id_figura (int, optional): ID especÃ­fico para la figura
+            id_figura (int): Identificador único de la figura
         """
         super().__init__(nombre, "2D", id_figura)
-
+    
     @abstractmethod
-    def calcular_area(self):
-        """MÃ©todo abstracto para calcular el Ã¡rea de la figura 2D."""
-        raise NotImplementedError("Subclases deben implementar calcular_area()")
-
+    def calcular_area(self) -> float:
+        """Calcula el área de la figura 2D"""
+        pass
+    
     @abstractmethod
-    def calcular_perimetro(self):
-        """MÃ©todo abstracto para calcular el perÃ­metro de la figura 2D."""
-        raise NotImplementedError("Subclases deben implementar calcular_perimetro()")
+    def calcular_perimetro(self) -> float:
+        """Calcula el perímetro de la figura 2D"""
+        pass

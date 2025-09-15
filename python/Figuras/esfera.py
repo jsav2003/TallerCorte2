@@ -1,53 +1,46 @@
-﻿
-
 """
-MÃ³dulo que define la clase Esfera.
+Clase Esfera - Figura tridimensional
 """
 import math
-from figura3d import Figura3d
+from .Figura3d import Figura3d
+
 
 class Esfera(Figura3d):
-    """Clase para representar una esfera. Hereda de Figura3d."""
-
-    def __init__(self, radio, id_figura=None):
+    """Clase que representa una esfera"""
+    
+    def __init__(self, radio: float, id_figura: int):
         """
-        Constructor de la clase Esfera.
-
+        Constructor de la clase Esfera
+        
         Args:
-            radio (float): Radio de la esfera (debe ser validado externamente)
-            id_figura (int, optional): ID especÃ­fico para la figura
+            radio (float): Radio de la esfera
+            id_figura (int): Identificador único de la figura
         """
         super().__init__("Esfera", id_figura)
-        self.radio = float(radio)
-
-    def calcular_volumen(self):
-        """Calcula el volumen de la esfera usando Ï€."""
-        return (4/3) * math.pi * self.radio ** 3
-
-    def calcular_area_superficie(self):
-        """Calcula el Ã¡rea de superficie de la esfera."""
-        return 4 * math.pi * self.radio ** 2
-
-    def get_radio(self):
-        """Retorna el radio de la esfera."""
-        return self.radio
-
-    def set_radio(self, radio):
-        """
-        Establece un nuevo radio para la esfera.
-
-        Args:
-            radio (float): Nuevo radio (debe ser validado externamente)
-        """
-        self.radio = float(radio)
-
-    def __str__(self):
-        """RepresentaciÃ³n en string de la esfera."""
-        return (f"Esfera ID:{self.get_id()} - "
-                f"Radio: {self.radio:.2f}, "
-                f"Volumen: {self.calcular_volumen():.2f}, "
-                f"Ãrea superficie: {self.calcular_area_superficie():.2f}")
-
-    def __repr__(self):
-        """RepresentaciÃ³n tÃ©cnica de la esfera."""
-        return f"Esfera(radio={self.radio}, id_figura={self.get_id()})"
+        self._radio = radio
+    
+    def calcular_volumen(self) -> float:
+        """Calcula el volumen de la esfera"""
+        return (4/3) * math.pi * (self._radio ** 3)
+    
+    def calcular_area_superficie(self) -> float:
+        """Calcula el área de superficie de la esfera"""
+        return 4 * math.pi * (self._radio ** 2)
+    
+    def get_radio(self) -> float:
+        """Obtiene el radio de la esfera"""
+        return self._radio
+    
+    def set_radio(self, radio: float) -> None:
+        """Establece el radio de la esfera"""
+        if radio <= 0:
+            raise ValueError("El radio debe ser mayor que cero")
+        self._radio = radio
+    
+    def __str__(self) -> str:
+        """Representación en cadena de la esfera"""
+        return f"Esfera(id={self.get_id()}, radio={self._radio:.2f})"
+    
+    def __repr__(self) -> str:
+        """Representación técnica de la esfera"""
+        return f"Esfera(radio={self._radio}, id_figura={self.get_id()})"

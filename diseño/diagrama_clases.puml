@@ -88,6 +88,7 @@ class RepositorioFiguras {
   + limpiar_repositorio(): void
   + guardar_figuras(): bool
   + cargar_figuras(): bool
+  + obtener_estadisticas(): Dict
 }
 
 class Gestionar {
@@ -104,6 +105,9 @@ class Gestionar {
   + consultar_todas_figuras(): void
   + consultar_figura_por_id(): void
   + eliminar_figura(): void
+  + mostrar_estadisticas(): void
+  + cambiar_unidad_medida(): void
+  + limpiar_repositorio(): void
 }
 
 class GeneradorID {
@@ -111,6 +115,7 @@ class GeneradorID {
   + obtener_siguiente_id(): int
   + actualizar_si_mayor(id): void
   + resetear(): void
+  + obtener_contador_actual(): int
 }
 
 class UnidadMedida {
@@ -122,11 +127,14 @@ class UnidadMedida {
 class UnidadAdapter {
   + convertir(valor, desde, hacia): float
   + formatear_con_unidad(valor, unidad): str
+  + obtener_unidades_disponibles(): list
 }
 
 class PersistenciaArchivos {
   + guardar_en_archivo(figuras, archivo): bool
   + cargar_desde_archivo(archivo): List
+  - _figura_a_dict(figura): Dict
+  - _dict_a_figura(datos): Figura
 }
 
 class LectorEntrada {
@@ -134,6 +142,7 @@ class LectorEntrada {
   + leer_flotante(mensaje, minimo): float
   + leer_cadena(mensaje): str
   + confirmar_accion(mensaje): bool
+  + seleccionar_opcion(mensaje, opciones): int
 }
 
 class FormateadorSalida {
@@ -141,6 +150,9 @@ class FormateadorSalida {
   + formatear_figura(figura, unidad): str
   + formatear_lista_figuras(figuras, unidad): str
   + formatear_estadisticas(estadisticas): str
+  + mostrar_error(mensaje): str
+  + mostrar_exito(mensaje): str
+  + mostrar_info(mensaje): str
 }
 
 class Main {

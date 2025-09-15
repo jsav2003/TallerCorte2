@@ -16,4 +16,4 @@ RUN mkdir -p /app/Figuras
 RUN chmod 777 /app/Figuras
 
 # Comando por defecto
-CMD ["python", "Figuras/main.py"]
+CMD ["python", "-m", "Figuras.Main"]

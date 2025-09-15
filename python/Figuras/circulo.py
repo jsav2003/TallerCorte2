@@ -1,52 +1,46 @@
-﻿
 """
-MÃ³dulo que define la clase Circulo.
+Clase Circulo - Figura bidimensional
 """
 import math
-from figura2d import Figura2d
+from .Figura2d import Figura2d
+
 
 class Circulo(Figura2d):
-    """Clase para representar un cÃ­rculo. Hereda de Figura2d."""
-
-    def __init__(self, radio, id_figura=None):
+    """Clase que representa un círculo"""
+    
+    def __init__(self, radio: float, id_figura: int):
         """
-        Constructor de la clase Circulo.
-
+        Constructor de la clase Circulo
+        
         Args:
-            radio (float): Radio del cÃ­rculo (debe ser validado externamente)
-            id_figura (int, optional): ID especÃ­fico para la figura
+            radio (float): Radio del círculo
+            id_figura (int): Identificador único de la figura
         """
-        super().__init__("Circulo", id_figura)
-        self.radio = float(radio)
-
-    def calcular_area(self):
-        """Calcula el Ã¡rea del cÃ­rculo usando Ï€."""
-        return math.pi * self.radio ** 2
-
-    def calcular_perimetro(self):
-        """Calcula el perÃ­metro del cÃ­rculo usando Ï€."""
-        return 2 * math.pi * self.radio
-
-    def get_radio(self):
-        """Retorna el radio del cÃ­rculo."""
-        return self.radio
-
-    def set_radio(self, radio):
-        """
-        Establece un nuevo radio para el cÃ­rculo.
-
-        Args:
-            radio (float): Nuevo radio (debe ser validado externamente)
-        """
-        self.radio = float(radio)
-
-    def __str__(self):
-        """RepresentaciÃ³n en string del cÃ­rculo."""
-        return (f"CÃ­rculo ID:{self.get_id()} - "
-                f"Radio: {self.radio:.2f}, "
-                f"Ãrea: {self.calcular_area():.2f}, "
-                f"PerÃ­metro: {self.calcular_perimetro():.2f}")
-
-    def __repr__(self):
-        """RepresentaciÃ³n tÃ©cnica del cÃ­rculo."""
-        return f"Circulo(radio={self.radio}, id_figura={self.get_id()})"
+        super().__init__("Círculo", id_figura)
+        self._radio = radio
+    
+    def calcular_area(self) -> float:
+        """Calcula el área del círculo"""
+        return math.pi * self._radio ** 2
+    
+    def calcular_perimetro(self) -> float:
+        """Calcula el perímetro del círculo"""
+        return 2 * math.pi * self._radio
+    
+    def get_radio(self) -> float:
+        """Obtiene el radio del círculo"""
+        return self._radio
+    
+    def set_radio(self, radio: float) -> None:
+        """Establece el radio del círculo"""
+        if radio <= 0:
+            raise ValueError("El radio debe ser mayor que cero")
+        self._radio = radio
+    
+    def __str__(self) -> str:
+        """Representación en cadena del círculo"""
+        return f"Círculo(id={self.get_id()}, radio={self._radio:.2f})"
+    
+    def __repr__(self) -> str:
+        """Representación técnica del círculo"""
+        return f"Circulo(radio={self._radio}, id_figura={self.get_id()})"
