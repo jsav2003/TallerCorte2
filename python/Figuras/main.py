@@ -1,22 +1,18 @@
 """
-Clase principal del programa - Punto de entrada
+Módulo principal del programa - Punto de entrada
 """
-from .Gestionar import Gestionar
+# pylint: disable=invalid-name
+from Gestionar import Gestionar
 
-
-class Main:
+class Main:  # pylint: disable=too-few-public-methods
     """Clase principal del programa"""
-    
+
     @staticmethod
     def main() -> None:
         """Método principal para iniciar la aplicación"""
         gestor = Gestionar()
         gestor.ejecutar()
-        
-
 
 # Punto de entrada cuando se ejecuta el módulo directamente
 if __name__ == "__main__":
     Main.main()
-    1
-    
