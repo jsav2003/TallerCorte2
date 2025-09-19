@@ -10,5 +10,11 @@
     "nombre": "Cuadrado",
     "tipo": "2D",
     "lado": 2.0
+  },
+  {
+    "id": 6,
+    "nombre": "Cuadrado",
+    "tipo": "2D",
+    "lado": 5.0
   }
 ]

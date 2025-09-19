@@ -175,13 +175,13 @@ Gestionar *-- FormateadorSalida
 RepositorioFiguras *-- PersistenciaArchivos
 
 ' Relaciones de dependencia
-Figura ..> GeneradorID
-FiguraFactory ..> Circulo
-FiguraFactory ..> Cuadrado
-FiguraFactory ..> Cubo
-FiguraFactory ..> Esfera
-Gestionar ..> FiguraFactory
-UnidadAdapter ..> UnidadMedida
-Main ..> Gestionar
+Figura o-- GeneradorID
+FiguraFactory o-- Circulo
+FiguraFactory o-- Cuadrado
+FiguraFactory o-- Cubo
+FiguraFactory o-- Esfera
+Gestionar o-- FiguraFactory
+UnidadAdapter o-- UnidadMedida
+Main o-- Gestionar
 
 @enduml
