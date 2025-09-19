@@ -16,8 +16,3 @@ services:
       dockerfile: Dockerfile.java
     container_name: figuras_java
     
-  cpp-app:
-    build:
-      context: ./cpp
-      dockerfile: Dockerfile.cpp
-    container_name: figuras_cpp 
