@@ -1,37 +1,70 @@
 package org.example;
 
 /**
- * Clase para representar un cuadrado.
- * Hereda de la clase Figura2D.
+ * Clase Cuadrado - Figura bidimensional
  */
 public class Cuadrado extends Figura2d {
-
-    private final double longitudLado;
-
+    
+    private double lado;
+    
     /**
-     * Constructor de la clase Cuadrado.
-     * @param longitudLado la longitud del lado del cuadrado
+     * Constructor de la clase Cuadrado
+     * @param lado Longitud del lado del cuadrado
+     * @param idFigura Identificador único de la figura
+     * @throws IllegalArgumentException Si el lado es menor o igual a cero
      */
-    public Cuadrado(double longitudLado) {
-        super("Cuadrado");
-        this.longitudLado = longitudLado;
+    public Cuadrado(double lado, int idFigura) {
+        super("Cuadrado", idFigura);
+        if (lado <= 0) {
+            throw new IllegalArgumentException("El lado debe ser mayor que cero");
+        }
+        this.lado = lado;
     }
-
+    
     /**
-     * Calcula el área del cuadrado.
-     * @return el área del cuadrado
+     * Calcula el área del cuadrado
+     * @return El área del cuadrado
      */
     @Override
     public double calcularArea() {
-        return longitudLado * longitudLado;
+        return this.lado * this.lado;
     }
-
+    
     /**
-     * Calcula el perímetro del cuadrado.
-     * @return el perímetro del cuadrado
+     * Calcula el perímetro del cuadrado
+     * @return El perímetro del cuadrado
      */
     @Override
     public double calcularPerimetro() {
-        return 4 * longitudLado;
+        return 4 * this.lado;
+    }
+    
+    /**
+     * Obtiene la longitud del lado del cuadrado
+     * @return La longitud del lado
+     */
+    public double getLado() {
+        return this.lado;
+    }
+    
+    /**
+     * Establece la longitud del lado del cuadrado
+     * @param lado La nueva longitud del lado
+     * @throws IllegalArgumentException Si el lado es menor o igual a cero
+     */
+    public void setLado(double lado) {
+        if (lado <= 0) {
+            throw new IllegalArgumentException("El lado debe ser mayor que cero");
+        }
+        this.lado = lado;
+    }
+    
+    /**
+     * Representación en cadena del cuadrado
+     * @return Representación del cuadrado
+     */
+    @Override
+    public String toString() {
+        return String.format("Cuadrado(id=%d, lado=%.2f)", getId(), lado);
     }
 }

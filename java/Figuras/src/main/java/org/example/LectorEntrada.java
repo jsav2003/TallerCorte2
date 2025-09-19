@@ -1,89 +1,141 @@
 package org.example;
 
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
- * Clase para leer entrada del usuario.
+ * Clase para manejar la entrada de datos del usuario
  */
 public class LectorEntrada {
     
-    private Scanner scanner;
-
+    private static final Scanner scanner = new Scanner(System.in);
+    
     /**
-     * Constructor del lector de entrada.
+     * Lee un número entero del usuario con validación
+     * @param mensaje Mensaje a mostrar al usuario
+     * @param minimo Valor mínimo permitido (null si no hay mínimo)
+     * @param maximo Valor máximo permitido (null si no hay máximo)
+     * @return Número entero válido ingresado por el usuario
      */
-    public LectorEntrada() {
-        this.scanner = new Scanner(System.in);
-    }
-
-    /**
-     * Lee un número entero dentro de un rango.
-     * @param mensaje mensaje a mostrar al usuario
-     * @param minimo valor mínimo permitido
-     * @param maximo valor máximo permitido
-     * @return el entero leído
-     */
-    public int leerEntero(String mensaje, int minimo, int maximo) {
-        int valor;
-        do {
-            System.out.print(mensaje);
-            while (!scanner.hasNextInt()) {
+    public static int leerEntero(String mensaje, Integer minimo, Integer maximo) {
+        while (true) {
+            try {
+                System.out.print(mensaje);
+                int valor = scanner.nextInt();
+                scanner.nextLine(); // Limpiar buffer
+                
+                if (minimo != null && valor < minimo) {
+                    System.out.println("El valor debe ser mayor o igual a " + minimo);
+                    continue;
+                }
+                
+                if (maximo != null && valor > maximo) {
+                    System.out.println("El valor debe ser menor o igual a " + maximo);
+                    continue;
+                }
+                
+                return valor;
+                
+            } catch (InputMismatchException e) {
                 System.out.println("Por favor, ingrese un número entero válido.");
-                System.out.print(mensaje);
-                scanner.next();
+                scanner.nextLine(); // Limpiar buffer
             }
-            valor = scanner.nextInt();
-            if (valor < minimo || valor > maximo) {
-                System.out.printf("El valor debe estar entre %d y %d.%n", minimo, maximo);
-            }
-        } while (valor < minimo || valor > maximo);
-        
-        return valor;
+        }
     }
-
+    
     /**
-     * Lee un número flotante mayor o igual al mínimo.
-     * @param mensaje mensaje a mostrar al usuario
-     * @param minimo valor mínimo permitido
-     * @return el flotante leído
+     * Lee un número flotante del usuario con validación
+     * @param mensaje Mensaje a mostrar al usuario
+     * @param minimo Valor mínimo permitido (null si no hay mínimo)
+     * @return Número flotante válido ingresado por el usuario
      */
-    public double leerFlotante(String mensaje, double minimo) {
-        double valor;
-        do {
-            System.out.print(mensaje);
-            while (!scanner.hasNextDouble()) {
+    public static double leerFlotante(String mensaje, Double minimo) {
+        while (true) {
+            try {
+                System.out.print(mensaje);
+                double valor = scanner.nextDouble();
+                scanner.nextLine(); // Limpiar buffer
+                
+                if (minimo != null && valor < minimo) {
+                    System.out.println("El valor debe ser mayor o igual a " + minimo);
+                    continue;
+                }
+                
+                return valor;
+                
+            } catch (InputMismatchException e) {
                 System.out.println("Por favor, ingrese un número válido.");
-                System.out.print(mensaje);
-                scanner.next();
+                scanner.nextLine(); // Limpiar buffer
             }
-            valor = scanner.nextDouble();
-            if (valor < minimo) {
-                System.out.printf("El valor debe ser mayor o igual a %.2f.%n", minimo);
+        }
+    }
+    
+    /**
+     * Lee una cadena de texto del usuario
+     * @param mensaje Mensaje a mostrar al usuario
+     * @return Cadena ingresada por el usuario
+     */
+    public static String leerCadena(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String valor = scanner.nextLine().trim();
+            if (!valor.isEmpty()) {
+                return valor;
             }
-        } while (valor < minimo);
+            System.out.println("Por favor, ingrese un valor válido.");
+        }
+    }
+    
+    /**
+     * Solicita confirmación del usuario (s/n)
+     * @param mensaje Mensaje de confirmación
+     * @return true si el usuario confirma, false en caso contrario
+     */
+    public static boolean confirmarAccion(String mensaje) {
+        while (true) {
+            System.out.print(mensaje + " (s/n): ");
+            String respuesta = scanner.nextLine().trim().toLowerCase();
+            
+            if (respuesta.equals("s") || respuesta.equals("si") || respuesta.equals("sí") || 
+                respuesta.equals("y") || respuesta.equals("yes")) {
+                return true;
+            } else if (respuesta.equals("n") || respuesta.equals("no")) {
+                return false;
+            } else {
+                System.out.println("Por favor, responda 's' para sí o 'n' para no.");
+            }
+        }
+    }
+    
+    /**
+     * Permite al usuario seleccionar una opción de una lista
+     * @param mensaje Mensaje a mostrar
+     * @param opciones Lista de opciones disponibles
+     * @return Índice de la opción seleccionada (base 0)
+     */
+    public static int seleccionarOpcion(String mensaje, List<String> opciones) {
+        System.out.println(mensaje);
+        for (int i = 0; i < opciones.size(); i++) {
+            System.out.println((i + 1) + ". " + opciones.get(i));
+        }
         
-        return valor;
-    }
-
-    /**
-     * Lee una cadena de texto.
-     * @param mensaje mensaje a mostrar al usuario
-     * @return la cadena leída
-     */
-    public String leerCadena(String mensaje) {
-        System.out.print(mensaje);
-        scanner.nextLine(); // Limpiar buffer
-        return scanner.nextLine().trim();
-    }
-
-    /**
-     * Solicita confirmación del usuario.
-     * @param mensaje mensaje de confirmación
-     * @return true si confirma, false en caso contrario
-     */
-    public boolean confirmarAccion(String mensaje) {
-        System.out.print(mensaje + " (s/n): ");
-        String respuesta = scanner.next().toLowerCase();
-        return respuesta.equals("s") || respuesta.equals("si") || respuesta.equals("y") || respuesta.equals("yes");
+        while (true) {
+            try {
+                System.out.print("Seleccione una opción: ");
+                int seleccion = scanner.nextInt();
+                scanner.nextLine(); // Limpiar buffer
+                
+                if (seleccion >= 1 && seleccion <= opciones.size()) {
+                    return seleccion - 1;
+                } else {
+                    System.out.println("Por favor, seleccione un número entre 1 y " + opciones.size());
+                }
+                
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, ingrese un número válido.");
+                scanner.nextLine(); // Limpiar buffer
+            }
+        }
     }
 }

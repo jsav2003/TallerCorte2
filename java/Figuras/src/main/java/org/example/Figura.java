@@ -1,50 +1,61 @@
 package org.example;
 
 /**
- * Clase madre para figuras geométricas 2D y 3D.
+ * Clase base abstracta Figura
  */
-public class Figura {
-
+public abstract class Figura {
+    
     private String nombre;
     private String tipo;
-
+    private int idFigura;
+    
     /**
-     * Constructor de la clase Figura.
-     * @param nombre el nombre de la figura
-     * @param tipo el tipo de la figura
+     * Constructor de la clase Figura
+     * @param nombre Nombre de la figura
+     * @param tipo Tipo de figura
+     * @param idFigura Identificador único de la figura
      */
-    public Figura(String nombre, String tipo) {
+    public Figura(String nombre, String tipo, int idFigura) {
         this.nombre = nombre;
         this.tipo = tipo;
+        this.idFigura = idFigura;
     }
-
+    
     /**
-     * Retorna el nombre de la figura.
-     * @return el nombre de la figura
+     * Obtiene el nombre de la figura
+     * @return El nombre de la figura
      */
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
-
+    
     /**
-     * Retorna el tipo de la figura.
-     * @return el tipo de la figura
+     * Obtiene el tipo de la figura
+     * @return El tipo de la figura
      */
     public String getTipo() {
-        return tipo;
+        return this.tipo;
     }
-
+    
     /**
-     * Establece el nombre de la figura.
-     * @param nombre el nuevo nombre de la figura
+     * Obtiene el ID de la figura
+     * @return El ID de la figura
+     */
+    public int getId() {
+        return this.idFigura;
+    }
+    
+    /**
+     * Establece el nombre de la figura
+     * @param nombre El nuevo nombre
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
     /**
-     * Establece el tipo de la figura.
-     * @param tipo el nuevo tipo de la figura
+     * Establece el tipo de la figura
+     * @param tipo El nuevo tipo
      */
     public void setTipo(String tipo) {
         this.tipo = tipo;

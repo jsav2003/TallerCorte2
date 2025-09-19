@@ -12,7 +12,7 @@ services:
     
   java-app:
     build:
-      context: ./java
+      context: ./java/Figuras
       dockerfile: Dockerfile.java
     container_name: figuras_java
     

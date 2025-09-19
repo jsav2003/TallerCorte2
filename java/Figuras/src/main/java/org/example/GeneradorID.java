@@ -1,54 +1,42 @@
 package org.example;
 
 /**
- * Generador de IDs únicos para figuras.
- * Implementa el patrón Singleton.
+ * Generador de IDs únicos para las figuras
  */
 public class GeneradorID {
     
-    private static GeneradorID instance;
-    private int contadorId;
-
+    private static int contadorId = 0;
+    
     /**
-     * Constructor privado para el patrón Singleton.
+     * Obtiene el siguiente ID disponible
+     * @return Siguiente ID único
      */
-    private GeneradorID() {
-        this.contadorId = 0;
-    }
-
-    /**
-     * Obtiene la instancia única del generador.
-     * @return la instancia del GeneradorID
-     */
-    public static synchronized GeneradorID getInstance() {
-        if (instance == null) {
-            instance = new GeneradorID();
-        }
-        return instance;
-    }
-
-    /**
-     * Obtiene el siguiente ID disponible.
-     * @return el siguiente ID único
-     */
-    public synchronized int obtenerSiguienteId() {
+    public static synchronized int obtenerSiguienteId() {
         return ++contadorId;
     }
-
+    
     /**
-     * Actualiza el contador si el ID proporcionado es mayor al actual.
-     * @param id el ID a comparar
+     * Actualiza el contador si el ID proporcionado es mayor
+     * @param idFigura ID a comparar con el contador actual
      */
-    public synchronized void actualizarSiMayor(int id) {
-        if (id > contadorId) {
-            contadorId = id;
+    public static synchronized void actualizarSiMayor(int idFigura) {
+        if (idFigura > contadorId) {
+            contadorId = idFigura;
         }
     }
-
+    
     /**
-     * Resetea el contador de IDs.
+     * Resetea el contador de IDs a cero
      */
-    public synchronized void resetear() {
+    public static synchronized void resetear() {
         contadorId = 0;
+    }
+    
+    /**
+     * Obtiene el valor actual del contador sin incrementarlo
+     * @return Valor actual del contador
+     */
+    public static synchronized int obtenerContadorActual() {
+        return contadorId;
     }
 }

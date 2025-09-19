@@ -4,140 +4,194 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Repositorio para almacenar y gestionar figuras geométricas.
+ * Repositorio para gestionar la colección de figuras geométricas
  */
 public class RepositorioFiguras {
     
-    private Map<Integer, Figura> figuras;
-    private String archivoPersistencia;
-    private PersistenciaArchivos persistencia;
-    private boolean autoGuardar;
-
+    private final Map<Integer, Figura> figuras;
+    private final String archivoPersistencia;
+    private final PersistenciaArchivos persistencia;
+    private final boolean autoGuardar;
+    
     /**
-     * Constructor del repositorio de figuras.
-     * @param archivoPersistencia ruta del archivo para persistencia
-     * @param autoGuardar indica si debe guardar automáticamente
+     * Constructor del repositorio
+     * @param archivoPersistencia Archivo para persistencia de datos
+     * @param autoGuardar Si debe guardar automáticamente al modificar
      */
     public RepositorioFiguras(String archivoPersistencia, boolean autoGuardar) {
         this.figuras = new HashMap<>();
-        this.archivoPersistencia = archivoPersistencia;
+        this.archivoPersistencia = archivoPersistencia != null ? archivoPersistencia : "figuras.json";
         this.persistencia = new PersistenciaArchivos();
         this.autoGuardar = autoGuardar;
+        
+        // Cargar figuras existentes
         cargarFiguras();
     }
-
+    
     /**
-     * Almacena una figura en el repositorio.
-     * @param figura la figura a almacenar
-     * @return el ID de la figura almacenada
+     * Constructor por defecto
+     */
+    public RepositorioFiguras() {
+        this("figuras.json", true);
+    }
+    
+    /**
+     * Almacena una figura en el repositorio
+     * @param figura Figura a almacenar
+     * @return ID de la figura almacenada
      */
     public int almacenarFigura(Figura figura) {
         if (figura == null) {
-            throw new IllegalArgumentException("La figura no puede ser nula");
+            throw new IllegalArgumentException("La figura no puede ser null");
         }
         
-        figuras.put(figura.getId(), figura);
+        int idFigura = figura.getId();
+        this.figuras.put(idFigura, figura);
         
-        if (autoGuardar) {
+        // Actualizar el generador de ID si es necesario
+        GeneradorID.actualizarSiMayor(idFigura);
+        
+        if (this.autoGuardar) {
             guardarFiguras();
         }
         
-        return figura.getId();
+        return idFigura;
     }
-
+    
     /**
-     * Obtiene una figura por su ID.
-     * @param figuraId el ID de la figura
-     * @return la figura encontrada o null si no existe
+     * Obtiene una figura por su ID
+     * @param figuraId ID de la figura a buscar
+     * @return Figura encontrada o null
      */
     public Figura obtenerFigura(int figuraId) {
-        return figuras.get(figuraId);
+        return this.figuras.get(figuraId);
     }
-
+    
     /**
-     * Obtiene todas las figuras del repositorio.
-     * @return lista con todas las figuras
+     * Obtiene todas las figuras del repositorio
+     * @return Lista de todas las figuras
      */
     public List<Figura> obtenerTodasFiguras() {
-        return new ArrayList<>(figuras.values());
+        return new ArrayList<>(this.figuras.values());
     }
-
+    
     /**
-     * Elimina una figura del repositorio.
-     * @param figuraId el ID de la figura a eliminar
-     * @return true si se eliminó exitosamente, false en caso contrario
+     * Elimina una figura del repositorio
+     * @param figuraId ID de la figura a eliminar
+     * @return true si se eliminó, false si no existía
      */
     public boolean eliminarFigura(int figuraId) {
-        boolean eliminado = figuras.remove(figuraId) != null;
-        
-        if (eliminado && autoGuardar) {
-            guardarFiguras();
+        boolean existia = this.figuras.containsKey(figuraId);
+        if (existia) {
+            this.figuras.remove(figuraId);
+            if (this.autoGuardar) {
+                guardarFiguras();
+            }
         }
-        
-        return eliminado;
+        return existia;
     }
-
+    
     /**
-     * Cuenta el número total de figuras.
-     * @return el número de figuras en el repositorio
+     * Cuenta el número total de figuras
+     * @return Número de figuras en el repositorio
      */
     public int contarFiguras() {
-        return figuras.size();
+        return this.figuras.size();
     }
-
+    
     /**
-     * Busca figuras por tipo.
-     * @param tipo el tipo de figura a buscar
-     * @return lista de figuras del tipo especificado
+     * Lista todas las figuras en el repositorio
+     * @return Lista de todas las figuras almacenadas
+     */
+    public List<Figura> listarFiguras() {
+        return new ArrayList<>(this.figuras.values());
+    }
+    
+    /**
+     * Busca figuras por tipo
+     * @param tipo Tipo de figura a buscar
+     * @return Lista de figuras del tipo especificado
      */
     public List<Figura> buscarPorTipo(String tipo) {
-        return figuras.values().stream()
-                .filter(figura -> figura.getTipo().equalsIgnoreCase(tipo))
+        String tipoLower = tipo.toLowerCase();
+        return this.figuras.values().stream()
+                .filter(figura -> figura.getNombre().toLowerCase().equals(tipoLower))
                 .collect(Collectors.toList());
     }
-
+    
     /**
-     * Limpia el repositorio eliminando todas las figuras.
+     * Elimina todas las figuras del repositorio
      */
     public void limpiarRepositorio() {
-        figuras.clear();
-        
-        if (autoGuardar) {
+        this.figuras.clear();
+        GeneradorID.resetear();
+        if (this.autoGuardar) {
             guardarFiguras();
         }
     }
-
+    
     /**
-     * Guarda las figuras en el archivo de persistencia.
-     * @return true si se guardó exitosamente, false en caso contrario
+     * Guarda las figuras en el archivo de persistencia
+     * @return true si se guardó exitosamente
      */
     public boolean guardarFiguras() {
-        try {
-            return persistencia.guardarEnArchivo(new ArrayList<>(figuras.values()), archivoPersistencia);
-        } catch (Exception e) {
-            System.err.println("Error al guardar figuras: " + e.getMessage());
-            return false;
-        }
+        return PersistenciaArchivos.guardarEnArchivo(this.figuras, this.archivoPersistencia);
     }
-
+    
     /**
-     * Carga las figuras desde el archivo de persistencia.
-     * @return true si se cargó exitosamente, false en caso contrario
+     * Carga las figuras desde el archivo de persistencia
+     * @return true si se cargó exitosamente
      */
     public boolean cargarFiguras() {
         try {
-            List<Figura> figurasComputadas = persistencia.cargarDesdeArchivo(archivoPersistencia);
-            if (figurasComputadas != null) {
-                figuras.clear();
-                for (Figura figura : figurasComputadas) {
-                    figuras.put(figura.getId(), figura);
-                    GeneradorID.getInstance().actualizarSiMayor(figura.getId());
-                }
-                return true;
+            List<Figura> figurasCargadas = PersistenciaArchivos.cargarDesdeArchivo(this.archivoPersistencia);
+            
+            for (Figura figura : figurasCargadas) {
+                this.figuras.put(figura.getId(), figura);
+                GeneradorID.actualizarSiMayor(figura.getId());
             }
+            
+            return true;
+            
         } catch (Exception e) {
             System.err.println("Error al cargar figuras: " + e.getMessage());
+            return false;
         }
-        return false;
+    }
+    
+    /**
+     * Obtiene estadísticas del repositorio
+     * @return Mapa con estadísticas
+     */
+    public Map<String, Integer> obtenerEstadisticas() {
+        Map<String, Integer> estadisticas = new HashMap<>();
+        estadisticas.put("total", this.figuras.size());
+        estadisticas.put("círculo", 0);
+        estadisticas.put("cuadrado", 0);
+        estadisticas.put("cubo", 0);
+        estadisticas.put("esfera", 0);
+        
+        for (Figura figura : this.figuras.values()) {
+            String nombre = figura.getNombre().toLowerCase();
+            estadisticas.put(nombre, estadisticas.getOrDefault(nombre, 0) + 1);
+        }
+        
+        return estadisticas;
+    }
+    
+    /**
+     * Obtiene el archivo de persistencia configurado
+     * @return Ruta del archivo de persistencia
+     */
+    public String getArchivoPersistencia() {
+        return this.archivoPersistencia;
+    }
+    
+    /**
+     * Indica si el auto guardado está habilitado
+     * @return true si está habilitado el auto guardado
+     */
+    public boolean isAutoGuardar() {
+        return this.autoGuardar;
     }
 }

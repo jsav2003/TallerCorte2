@@ -4,144 +4,199 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Clase para formatear la salida de información.
+ * Clase para formatear la salida hacia el usuario
  */
 public class FormateadorSalida {
-
+    
     /**
-     * Formatea un menú con título, opciones e información adicional.
-     * @param titulo el título del menú
-     * @param opciones las opciones del menú
-     * @param info información adicional a mostrar
-     * @return cadena formateada del menú
+     * Formatea un menú para mostrar al usuario
+     * @param titulo Título del menú
+     * @param opciones Lista de opciones del menú
+     * @param info Información adicional (opcional)
+     * @return Menú formateado
      */
-    public String formatearMenu(String titulo, String[] opciones, String info) {
-        StringBuilder sb = new StringBuilder();
+    public static String formatearMenu(String titulo, List<String> opciones, String info) {
+        StringBuilder resultado = new StringBuilder();
+        String lineaSeparadora = "=".repeat(50);
         
-        sb.append("\n").append("=".repeat(50)).append("\n");
-        sb.append("  ").append(titulo).append("\n");
-        sb.append("=".repeat(50)).append("\n");
+        resultado.append(lineaSeparadora).append("\n");
+        resultado.append(String.format(" %s \n", centrarTexto(titulo, 48)));
+        resultado.append(lineaSeparadora).append("\n");
         
         if (info != null && !info.isEmpty()) {
-            sb.append(info).append("\n");
-            sb.append("-".repeat(30)).append("\n");
+            resultado.append(info).append("\n");
+            resultado.append("\n");
         }
         
-        for (int i = 0; i < opciones.length; i++) {
-            sb.append(String.format("%2d. %s%n", i + 1, opciones[i]));
+        for (int i = 0; i < opciones.size(); i++) {
+            resultado.append(String.format("%2d. %s\n", i + 1, opciones.get(i)));
         }
         
-        sb.append("=".repeat(50)).append("\n");
-        
-        return sb.toString();
+        resultado.append(lineaSeparadora);
+        return resultado.toString();
     }
-
+    
     /**
-     * Formatea la información de una figura con unidad especificada.
-     * @param figura la figura a formatear
-     * @param unidad la unidad para mostrar las medidas
-     * @return cadena formateada de la figura
+     * Formatea la información de una figura
+     * @param figura Figura a formatear
+     * @param unidad Unidad de medida a usar
+     * @return Información formateada de la figura
      */
-    public String formatearFigura(Figura figura, UnidadMedida unidad) {
-        if (figura == null) {
-            return "Figura no encontrada";
+    public static String formatearFigura(Figura figura, UnidadMedida unidad) {
+        StringBuilder resultado = new StringBuilder();
+        
+        resultado.append("📐 Figura ID: ").append(figura.getId()).append("\n");
+        resultado.append("   Tipo: ").append(figura.getNombre()).append("\n");
+        resultado.append("   Categoría: ").append(figura.getTipo()).append("\n");
+        
+        // Mostrar dimensiones específicas
+        if (figura instanceof Circulo) {
+            Circulo circulo = (Circulo) figura;
+            double radioConvertido = UnidadAdapter.convertir(circulo.getRadio(), UnidadMedida.METROS, unidad);
+            resultado.append("   Radio: ").append(UnidadAdapter.formatearConUnidad(radioConvertido, unidad)).append("\n");
+        } else if (figura instanceof Cuadrado) {
+            Cuadrado cuadrado = (Cuadrado) figura;
+            double ladoConvertido = UnidadAdapter.convertir(cuadrado.getLado(), UnidadMedida.METROS, unidad);
+            resultado.append("   Lado: ").append(UnidadAdapter.formatearConUnidad(ladoConvertido, unidad)).append("\n");
+        } else if (figura instanceof Cubo) {
+            Cubo cubo = (Cubo) figura;
+            double ladoConvertido = UnidadAdapter.convertir(cubo.getLado(), UnidadMedida.METROS, unidad);
+            resultado.append("   Lado: ").append(UnidadAdapter.formatearConUnidad(ladoConvertido, unidad)).append("\n");
+        } else if (figura instanceof Esfera) {
+            Esfera esfera = (Esfera) figura;
+            double radioConvertido = UnidadAdapter.convertir(esfera.getRadio(), UnidadMedida.METROS, unidad);
+            resultado.append("   Radio: ").append(UnidadAdapter.formatearConUnidad(radioConvertido, unidad)).append("\n");
         }
-
-        UnidadAdapter adapter = new UnidadAdapter();
-        StringBuilder sb = new StringBuilder();
         
-        sb.append(String.format("ID: %d | Tipo: %s | Nombre: %s%n", 
-                figura.getId(), figura.getTipo(), figura.getNombre()));
-        
+        // Mostrar cálculos
         if (figura instanceof Figura2d) {
-            Figura2d fig2d = (Figura2d) figura;
-            double area = fig2d.calcularArea();
-            double perimetro = fig2d.calcularPerimetro();
+            Figura2d figura2d = (Figura2d) figura;
+            double area = figura2d.calcularArea();
+            double perimetro = figura2d.calcularPerimetro();
             
-            sb.append(String.format("  Área: %s²%n", 
-                    adapter.formatearConUnidad(area, unidad)));
-            sb.append(String.format("  Perímetro: %s%n", 
-                    adapter.formatearConUnidad(perimetro, unidad)));
+            // Convertir área (unidad²) y perímetro
+            double factor = unidad.getFactorConversion();
+            double areaConvertida = area / (factor * factor);
+            double perimetroConvertido = UnidadAdapter.convertir(perimetro, UnidadMedida.METROS, unidad);
             
-            if (figura instanceof Circulo) {
-                Circulo circulo = (Circulo) figura;
-                sb.append(String.format("  Radio: %s%n", 
-                        adapter.formatearConUnidad(circulo.getRadio(), unidad)));
-            } else if (figura instanceof Cuadrado) {
-                Cuadrado cuadrado = (Cuadrado) figura;
-                sb.append(String.format("  Lado: %s%n", 
-                        adapter.formatearConUnidad(cuadrado.getLado(), unidad)));
-            }
-        }
-        
-        if (figura instanceof Figura3d) {
-            Figura3d fig3d = (Figura3d) figura;
-            double volumen = fig3d.calcularVolumen();
+            resultado.append(String.format("   Área: %.2f %s²\n", areaConvertida, unidad.getSimbolo()));
+            resultado.append("   Perímetro: ").append(UnidadAdapter.formatearConUnidad(perimetroConvertido, unidad)).append("\n");
             
-            sb.append(String.format("  Volumen: %s³%n", 
-                    adapter.formatearConUnidad(volumen, unidad)));
+        } else if (figura instanceof Figura3d) {
+            Figura3d figura3d = (Figura3d) figura;
+            double volumen = figura3d.calcularVolumen();
+            
+            // Convertir volumen (unidad³)
+            double factor = unidad.getFactorConversion();
+            double volumenConvertido = volumen / (factor * factor * factor);
+            
+            resultado.append(String.format("   Volumen: %.2f %s³\n", volumenConvertido, unidad.getSimbolo()));
             
             if (figura instanceof Cubo) {
                 Cubo cubo = (Cubo) figura;
                 double areaSuperficie = cubo.calcularAreaSuperficie();
-                sb.append(String.format("  Lado: %s%n", 
-                        adapter.formatearConUnidad(cubo.getLado(), unidad)));
-                sb.append(String.format("  Área Superficie: %s²%n", 
-                        adapter.formatearConUnidad(areaSuperficie, unidad)));
+                double areaConvertida = areaSuperficie / (factor * factor);
+                resultado.append(String.format("   Área superficie: %.2f %s²\n", areaConvertida, unidad.getSimbolo()));
             } else if (figura instanceof Esfera) {
                 Esfera esfera = (Esfera) figura;
                 double areaSuperficie = esfera.calcularAreaSuperficie();
-                sb.append(String.format("  Radio: %s%n", 
-                        adapter.formatearConUnidad(esfera.getRadio(), unidad)));
-                sb.append(String.format("  Área Superficie: %s²%n", 
-                        adapter.formatearConUnidad(areaSuperficie, unidad)));
+                double areaConvertida = areaSuperficie / (factor * factor);
+                resultado.append(String.format("   Área superficie: %.2f %s²\n", areaConvertida, unidad.getSimbolo()));
             }
         }
         
-        return sb.toString();
+        return resultado.toString();
     }
-
+    
     /**
-     * Formatea una lista de figuras.
-     * @param figuras lista de figuras a formatear
-     * @param unidad unidad para mostrar las medidas
-     * @return cadena formateada de la lista
+     * Formatea una lista de figuras
+     * @param figuras Lista de figuras
+     * @param unidad Unidad de medida a usar
+     * @return Lista formateada de figuras
      */
-    public String formatearListaFiguras(List<Figura> figuras, UnidadMedida unidad) {
-        if (figuras == null || figuras.isEmpty()) {
+    public static String formatearListaFiguras(List<Figura> figuras, UnidadMedida unidad) {
+        if (figuras.isEmpty()) {
             return "No hay figuras para mostrar.";
         }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Total de figuras: %d%n", figuras.size()));
-        sb.append("-".repeat(60)).append("\n");
         
-        for (Figura figura : figuras) {
-            sb.append(formatearFigura(figura, unidad));
-            sb.append("-".repeat(60)).append("\n");
+        StringBuilder resultado = new StringBuilder();
+        resultado.append("Total de figuras: ").append(figuras.size()).append("\n");
+        resultado.append("=".repeat(50)).append("\n");
+        
+        for (int i = 0; i < figuras.size(); i++) {
+            resultado.append("\n").append(i + 1).append(". ").append(formatearFigura(figuras.get(i), unidad));
         }
         
-        return sb.toString();
+        return resultado.toString();
     }
-
+    
     /**
-     * Formatea estadísticas del sistema.
-     * @param estadisticas mapa con las estadísticas
-     * @return cadena formateada de las estadísticas
+     * Formatea las estadísticas del repositorio
+     * @param estadisticas Mapa con estadísticas
+     * @return Estadísticas formateadas
      */
-    public String formatearEstadisticas(Map<String, Object> estadisticas) {
-        StringBuilder sb = new StringBuilder();
+    public static String formatearEstadisticas(Map<String, Integer> estadisticas) {
+        StringBuilder resultado = new StringBuilder();
+        resultado.append("ESTADÍSTICAS DEL REPOSITORIO\n");
+        resultado.append("=".repeat(40)).append("\n");
+        resultado.append("Total de figuras: ").append(estadisticas.getOrDefault("total", 0)).append("\n");
+        resultado.append("\n");
+        resultado.append("Distribución por tipo:\n");
         
-        sb.append("\n").append("=".repeat(40)).append("\n");
-        sb.append("  ESTADÍSTICAS DEL SISTEMA").append("\n");
-        sb.append("=".repeat(40)).append("\n");
+        String[] tipos = {"círculo", "cuadrado", "cubo", "esfera"};
+        int total = estadisticas.getOrDefault("total", 0);
         
-        estadisticas.forEach((key, value) -> 
-            sb.append(String.format("%-20s: %s%n", key, value))
-        );
+        for (String tipo : tipos) {
+            int cantidad = estadisticas.getOrDefault(tipo, 0);
+            if (cantidad > 0) {
+                double porcentaje = total > 0 ? (cantidad * 100.0 / total) : 0.0;
+                resultado.append(String.format(" • %s: %d (%.1f%%)\n", 
+                    tipo.substring(0, 1).toUpperCase() + tipo.substring(1), cantidad, porcentaje));
+            }
+        }
         
-        sb.append("=".repeat(40)).append("\n");
+        return resultado.toString();
+    }
+    
+    /**
+     * Formatea un mensaje de error
+     * @param mensaje Mensaje de error
+     * @return Mensaje de error formateado
+     */
+    public static String mostrarError(String mensaje) {
+        return "Error: " + mensaje;
+    }
+    
+    /**
+     * Formatea un mensaje de éxito
+     * @param mensaje Mensaje de éxito
+     * @return Mensaje de éxito formateado
+     */
+    public static String mostrarExito(String mensaje) {
+        return mensaje;
+    }
+    
+    /**
+     * Formatea un mensaje informativo
+     * @param mensaje Mensaje informativo
+     * @return Mensaje informativo formateado
+     */
+    public static String mostrarInfo(String mensaje) {
+        return mensaje;
+    }
+    
+    /**
+     * Centra un texto en un ancho específico
+     * @param texto Texto a centrar
+     * @param ancho Ancho total
+     * @return Texto centrado
+     */
+    private static String centrarTexto(String texto, int ancho) {
+        if (texto.length() >= ancho) {
+            return texto;
+        }
         
-        return sb.toString();
+        int espacios = (ancho - texto.length()) / 2;
+        return " ".repeat(espacios) + texto + " ".repeat(ancho - texto.length() - espacios);
     }
 }

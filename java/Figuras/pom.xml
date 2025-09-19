@@ -1,79 +1,97 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- pom.xml -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="
+           http://maven.apache.org/POM/4.0.0 
+           http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>org.example</groupId>
-    <artifactId>Figuras</artifactId>
-    <version>1.0-SNAPSHOT</version>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.sistema.figuras</groupId>
+  <artifactId>sistema-figuras-geometricas</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
 
-    <properties>
-        <!-- Java y codificación -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>21</maven.compiler.release>
+  <name>Sistema de Figuras Geométricas</name>
+  <description>Sistema de gestión de figuras geométricas 2D y 3D con conversión de unidades</description>
 
-        <!-- Versiones -->
-        <junit.jupiter.version>5.10.2</junit.jupiter.version>
-        <maven.surefire.version>3.2.5</maven.surefire.version>
-        <maven.checkstyle.version>3.3.1</maven.checkstyle.version>
-        <maven.compiler.version>3.13.0</maven.compiler.version>
-    </properties>
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <gson.version>2.10.1</gson.version>
+    <junit.version>5.9.2</junit.version>
+    <shade.version>3.4.1</shade.version>
+  </properties>
 
-    <dependencies>
-        <!-- JUnit 5 (Jupiter) -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <!-- Google Gson para JSON -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${gson.version}</version>
+    </dependency>
 
-    <build>
-        <plugins>
+    <!-- JUnit 5 para tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-            <!-- Compilador: usar opción release 21 para alinear con JDK 21 -->
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.version}</version>
-                <configuration>
-                    <release>${maven.compiler.release}</release>
-                </configuration>
-            </plugin>
+  <build>
+    <finalName>${project.artifactId}-${project.version}-all</finalName>
+    <plugins>
+      <!-- Compiler Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
 
-            <!-- Ejecuta pruebas JUnit 5 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.version}</version>
-                <configuration>
-                    <useModulePath>false</useModulePath>
-                </configuration>
-            </plugin>
+      <!-- Exec Plugin para mvn exec:java -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <mainClass>Main</mainClass>
+        </configuration>
+      </plugin>
 
-            <!-- Checkstyle: estilo Google; falla el build si hay errores -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven.checkstyle.version}</version>
-                <configuration>
-                    <configLocation>google_checks.xml</configLocation>
-                    <consoleOutput>true</consoleOutput>
-                    <failsOnError>true</failsOnError>
-                    <linkXRef>false</linkXRef>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+      <!-- Surefire Plugin para tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M8</version>
+      </plugin>
 
-        </plugins>
-    </build>
+      <!-- Shade Plugin para JAR ejecutable -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${shade.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>shade</goal></goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.example.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
