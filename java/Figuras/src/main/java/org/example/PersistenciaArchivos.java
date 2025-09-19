@@ -21,15 +21,15 @@ public class PersistenciaArchivos {
             if (parent != null && !Files.exists(parent)) {
                 Files.createDirectories(parent);
             }
-            // Serializar colección a JSON
+            //System.out.println("Guardando JSON en: " + path.toAbsolutePath());
             List<Map<String, Object>> datos = new ArrayList<>();
             for (Figura f : figuras.values()) {
                 datos.add(figuraADict(f));
             }
             String json = gson.toJson(datos);
-            // Escribir JSON con UTF-8
             Files.write(path, json.getBytes(StandardCharsets.UTF_8),
                         StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            //System.out.println("JSON guardado correctamente.");
             return true;
         } catch (IOException e) {
             System.err.println("Error al guardar archivo: " + e.getMessage());
@@ -40,11 +40,12 @@ public class PersistenciaArchivos {
     public static List<Figura> cargarDesdeArchivo(String archivo) {
         List<Figura> figuras = new ArrayList<>();
         Path path = Paths.get(archivo);
+        System.out.println("Cargando JSON desde: " + path.toAbsolutePath());
         if (!Files.exists(path)) {
+            System.out.println("Archivo no existe, devolviendo lista vacía.");
             return figuras;
         }
         try {
-            // Leer JSON completo como String UTF-8
             String json = Files.readString(path, StandardCharsets.UTF_8);
             Type listType = new TypeToken<List<Map<String, Object>>>(){}.getType();
             List<Map<String, Object>> datosFiguras = gson.fromJson(json, listType);
@@ -56,6 +57,7 @@ public class PersistenciaArchivos {
                     }
                 }
             }
+            System.out.println("JSON cargado, figuras encontradas: " + figuras.size());
         } catch (IOException e) {
             System.err.println("Error al cargar archivo: " + e.getMessage());
         }

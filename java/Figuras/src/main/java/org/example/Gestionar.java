@@ -154,6 +154,7 @@ public class Gestionar {
             }
             
             int idFigura = repositorio.almacenarFigura(figura);
+            repositorio.guardarFiguras();
             System.out.println(FormateadorSalida.mostrarExito("Figura creada exitosamente con ID: " + idFigura));
             
             // Mostrar información de la figura creada

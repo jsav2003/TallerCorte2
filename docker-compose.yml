@@ -9,10 +9,15 @@ services:
     working_dir: /app/Figuras
     stdin_open: true
     tty: true
-    
+
   java-app:
     build:
       context: ./java/Figuras
       dockerfile: Dockerfile.java
     container_name: figuras_java
-    
+    working_dir: /app/Figuras
+    volumes:
+      - ./java/Figuras/data:/app/Figuras/data
+    stdin_open: true
+    tty: true
+    command: ["java", "-jar", "app.jar"]
